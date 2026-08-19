@@ -50,6 +50,9 @@ class LockerRequestOut(BaseModel):
     completed_at: datetime | None = None
     rejection_reason: str | None = None
     correlation_id: str
+    locker_number: str | None = None
+    customer_name: str | None = None
+
 
 
 class RejectRequest(BaseModel):
@@ -110,3 +113,19 @@ class NotificationOut(BaseModel):
     type: str
     read: bool
     created_at: datetime
+
+
+class CustomerEnrollmentRequest(BaseModel):
+    full_name: str
+    email: str
+    phone: str
+    face_image: str  # base64 data-URI or base64 string
+    locker_id: str | None = None
+    custom_id: str | None = None
+    mock_override: bool = False
+
+
+
+class NextCustomerIdResponse(BaseModel):
+    next_customer_id: str
+

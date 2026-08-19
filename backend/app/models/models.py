@@ -102,10 +102,19 @@ class LockerRequest(Base):
     approver: Mapped["User | None"] = relationship(foreign_keys=[approved_by])
     tokens: Mapped[list["VerificationToken"]] = relationship(back_populates="request")
 
+    @property
+    def locker_number(self) -> str | None:
+        return self.locker.locker_number if self.locker else None
+
+    @property
+    def customer_name(self) -> str | None:
+        return self.customer.full_name if self.customer else None
+
     __table_args__ = (
         Index("ix_requests_status", "status"),
         Index("ix_requests_requested_at", "requested_at"),
     )
+
 
 
 class VerificationToken(Base):

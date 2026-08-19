@@ -68,7 +68,10 @@ export interface LockerRequest {
   completed_at: string | null;
   rejection_reason: string | null;
   correlation_id: string;
+  locker_number?: string;
+  customer_name?: string;
 }
+
 
 export interface AuditEvent {
   id: string;

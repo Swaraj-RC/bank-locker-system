@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../services/api";
-import { ShieldCheck, UserCheck, Lock } from "lucide-react";
+import { ShieldCheck, UserCheck, Lock, UserPlus } from "lucide-react";
 
 interface CustomerUser {
   id: string;
@@ -36,12 +37,23 @@ export function CustomersPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      <div>
-        <h1 className="text-xl font-bold text-primary">Registered Customers</h1>
-        <p className="text-sm text-slate-500">
-          Customers authorized with biometric facial embeddings registered in Project NPN.
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-bold text-primary">Registered Customers</h1>
+          <p className="text-sm text-slate-500">
+            Customers authorized with biometric facial embeddings registered in Project NPN.
+          </p>
+        </div>
+
+        <Link
+          to="/enrollment"
+          className="btn-primary px-4 py-2 text-xs font-semibold flex items-center gap-2 shadow-sm rounded-lg"
+        >
+          <UserPlus size={15} />
+          <span>+ Enroll New Customer</span>
+        </Link>
       </div>
+
 
       <input
         value={search}

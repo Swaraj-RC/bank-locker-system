@@ -7,6 +7,7 @@ import { VaultPage } from "./pages/VaultPage";
 import { RequestsPage } from "./pages/RequestsPage";
 import { RequestDetailPage } from "./pages/RequestDetailPage";
 import { CustomersPage } from "./pages/CustomersPage";
+import { EnrollmentPage } from "./pages/EnrollmentPage";
 import { CompliancePage } from "./pages/CompliancePage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -35,6 +36,7 @@ function AppRoutes() {
         <Route path="requests" element={<RequestsPage />} />
         <Route path="requests/:requestId" element={<RequestDetailPage />} />
         <Route path="customers" element={<CustomersPage />} />
+        <Route path="enrollment" element={<EnrollmentPage />} />
         <Route path="compliance" element={<CompliancePage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="settings" element={<SettingsPage />} />
@@ -43,6 +45,7 @@ function AppRoutes() {
     </Routes>
   );
 }
+
 
 export default function App() {
   return (

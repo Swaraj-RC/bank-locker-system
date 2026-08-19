@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import {
-  LayoutGrid, Vault, ClipboardList, Users, Building2, ShieldCheck, BarChart3, Settings, LogOut, Bell,
+  LayoutGrid, Vault, ClipboardList, Users, UserPlus, Building2, ShieldCheck, BarChart3, Settings, LogOut, Bell,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 
@@ -9,10 +9,12 @@ const NAV_ITEMS = [
   { to: "/vault", label: "Locker Vault", icon: Vault },
   { to: "/requests", label: "Requests", icon: ClipboardList },
   { to: "/customers", label: "Customers", icon: Users },
+  { to: "/enrollment", label: "Face Enrollment", icon: UserPlus },
   { to: "/compliance", label: "Compliance & Audit", icon: ShieldCheck },
   { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/settings", label: "Settings", icon: Settings },
 ];
+
 
 export function AdminLayout() {
   const { user, logout } = useAuth();

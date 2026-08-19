@@ -309,14 +309,20 @@ def load_customer_embedding(customer_id: str) -> np.ndarray | None:
     if npn_dir.exists():
         search_dirs.append(npn_dir)
 
+    import re
     candidate_filenames = [
         f"{customer_id}.npy",
         f"{customer_id.lower()}.npy",
     ]
-    if "001" in customer_id:
-        candidate_filenames.append("customer001.npy")
-    elif "002" in customer_id:
-        candidate_filenames.append("customer002.npy")
+    # Match any customer number pattern (e.g. customer001, customer002, customer003, customer004, etc.)
+    num_match = re.search(r"(\d+)", customer_id)
+    if num_match:
+        digits = int(num_match.group(1))
+        candidate_filenames.extend([
+            f"customer{digits:03d}.npy",
+            f"customer{digits}.npy",
+        ])
+
 
     for directory in search_dirs:
         if not directory.exists():

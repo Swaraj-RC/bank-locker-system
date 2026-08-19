@@ -9,9 +9,13 @@ from app.core.responses import success, ApiError
 from app.core.enums import RequestStatus, LockerStatus
 from app.api.deps import require_staff, require_manager
 from app.models import User, Locker, LockerRequest, AuditEvent, Branch, FaceVerification
-from app.schemas.domain import LockerOut, LockerRequestOut, RejectRequest, StaffLockerRequestCreate
+from app.schemas.domain import (
+    LockerOut, LockerRequestOut, RejectRequest, StaffLockerRequestCreate,
+    CustomerEnrollmentRequest, NextCustomerIdResponse,
+)
 from app.services.audit_service import record_event
 from app.services.state_machine import transition_request, transition_locker
+from app.services.enrollment_service import get_next_customer_id, enroll_customer
 
 router = APIRouter(prefix="/api/v1/admin", tags=["Admin"])
 
@@ -236,3 +240,35 @@ def list_customers(
     customers = q.order_by(User.full_name).all()
     from app.schemas.auth import UserOut
     return success([UserOut.model_validate(c).model_dump() for c in customers])
+
+
+@router.get("/customers/next-id", summary="Get the next auto-incremented customer ID (e.g. customer003)")
+def get_next_id(
+    user: User = Depends(require_staff),
+    db: Session = Depends(get_db),
+):
+    next_id = get_next_customer_id(db)
+    return success({"next_customer_id": next_id})
+
+
+@router.post("/customers/enroll", summary="Enroll a new customer with live face capture and biometric embedding", status_code=201)
+def enroll_new_customer(
+    payload: CustomerEnrollmentRequest,
+    user: User = Depends(require_staff),
+    db: Session = Depends(get_db),
+):
+    """Enroll a new customer by extracting face embedding, saving to database and disk, and assigning locker."""
+    result = enroll_customer(
+        db=db,
+        full_name=payload.full_name,
+        email=payload.email,
+        phone=payload.phone,
+        face_image=payload.face_image,
+        actor=user,
+        locker_id=payload.locker_id,
+        custom_id=payload.custom_id,
+        mock_override=payload.mock_override,
+    )
+
+    return success(result, "Customer enrolled successfully", 201)
+
